@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Открыть в браузере</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            text-align: center;
+            box-sizing: border-box;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a202c, #4a1d96, #5b21b6);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .container h2, .container p {
+            font-size: 24px;
+            margin: 10px 0;
+            padding: 10px 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.4;
+        }
+
+        .container h2 {
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        .container p {
+            font-weight: 400;
+        }
+
+        .container .icon {
+            font-size: 48px;
+            margin-top: 20px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .container .top-arrow {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 48px;
+            color: #e0c3fc;
+            animation: bounce 1.5s infinite;
+        }
+
+        .open-site-btn {
+            background: linear-gradient(45deg, #6b46c1, #9f7aea);
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .open-site-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .security-check {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e0c3fc;
+            border-top: 5px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        .checkmark {
+            display: none;
+            font-size: 50px;
+            color: #00ff00;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .instruction-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fingerprint {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 400px) {
+            .container h2, .container p {
+                font-size: 18px;
+                padding: 8px 15px;
+            }
+            .icon, .top-arrow {
+                font-size: 36px;
+            }
+            .open-site-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            .spinner {
+                width: 40px;
+                height: 40px;
+            }
+            .checkmark {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="androidContainer">
+        <h2>🔞</h2>
+        <p></p>
+        <button class="open-site-btn" onclick="tryOpenWithIntent()">Відкрити сайт</button>
+    </div>
+
+    <div class="container" id="androidInstructionContainer">
+        <div class="security-check">
+            <div class="spinner" id="securitySpinner"></div>
+            <div class="checkmark" id="securityCheckmark">✔</div>
+            <p id="securityText">Проверка сайта на безопасность...</p>
+            <p id="securityResult" style="display:none;">Результат: Сайт безопасен для использования</p>
+        </div>
+        <div class="instruction-content" id="instructionContent">
+            <div class="top-arrow">↗️</div>
+            <h2>Нажмите на три точки в правом верхнем углу ⬆️</h2>
+            <p>Выберите <strong>"ОТКРЫТЬ В БРАУЗЕРЕ"</strong>, чтобы продолжить.</p>
+            <div class="icon">⋮</div>
+        </div>
+    </div>
+
+    <div class="container" id="iosContainer">
+        <h2>УТРИМУЙТЕ ПАЛЕЦЬ НА ВІЛБИТКУ ⬇️⬇️!</h2>
+        <p>ВИБЕРІТЬ <strong>"ВІДКРИТИ ПОСИЛАННЯ"</strong></p>
+        <a href="https://t.me/+cw8IrkxkUFg1NDZi" target="_blank" class="link">
+            <img class="fingerprint" src="https://so65a.github.io/2/1.png" alt="Отпечаток пальца">
+        </a>
+    </div>
+
+    <script>
+        const isAndroid = /android/i.test(navigator.userAgent);
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+        const androidContainer = document.getElementById('androidContainer');
+        const androidInstructionContainer = document.getElementById('androidInstructionContainer');
+        const iosContainer = document.getElementById('iosContainer');
+        const securitySpinner = document.getElementById('securitySpinner');
+        const securityCheckmark = document.getElementById('securityCheckmark');
+        const securityText = document.getElementById('securityText');
+        const securityResult = document.getElementById('securityResult');
+        const instructionContent = document.getElementById('instructionContent');
+
+        const targetUrl = "https://t.me/+cw8IrkxkUFg1NDZi";
+        const userAgent = navigator.userAgent.toLowerCase();
+        const urlParams = new URLSearchParams(window.location.search);
+        const isExternal = urlParams.get('external') === 'true';
+
+        const isTikTokBrowser = /ttwebview|musically|tiktok|bytedance|douyin|webview/i.test(userAgent) || 
+                                 window.navigator.standalone === false;
+
+        function tryOpenWithIntent() {
+            const intentUrl = `intent://t.me/+cw8IrkxkUFg1NDZi#Intent;scheme=https;package=com.android.chrome;end`;
+            let intentTriggered = false;
+
+            const startTime = Date.now();
+            window.addEventListener('blur', () => {
+                intentTriggered = true;
+            });
+
+            window.location.href = intentUrl;
+
+            setTimeout(() => {
+                if (!intentTriggered && (Date.now() - startTime) < 1500) {
+                    androidContainer.style.display = 'none';
+                    androidInstructionContainer.style.display = 'flex';
+
+                    setTimeout(() => {
+                        securitySpinner.style.display = 'none';
+                        securityCheckmark.style.display = 'block';
+                        securityText.style.display = 'none';
+                        securityResult.style.display = 'block';
+                        instructionContent.style.display = 'flex';
+                    }, 3000);
+                } else {
+                    window.location.href = targetUrl;
+                }
+            }, 1000);
+        }
+
+        if (isAndroid) {
+            if (!isTikTokBrowser || isExternal) {
+                window.location.href = targetUrl;
+            } else {
+                androidContainer.style.display = 'flex';
+            }
+        } else if (isIOS) {
+            iosContainer.style.display = 'flex';
+
+            const iosLink = document.querySelector('.link');
+            let touchTimeout;
+            iosLink.addEventListener('touchstart', (e) => {
+                touchTimeout = setTimeout(() => {
+                    window.open(targetUrl, '_blank');
+                }, 1000);
+            });
+            iosLink.addEventListener('touchend', () => clearTimeout(touchTimeout));
+            iosLink.addEventListener('touchcancel', () => clearTimeout(touchTimeout));
+
+            if (!isTikTokBrowser || isExternal) {
+                window.location.href = targetUrl;
+            }
+        }
+    </script>
+</body>
+</html>
